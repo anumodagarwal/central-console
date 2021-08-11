@@ -1,0 +1,8 @@
+.cache
+.lsp
+.clj-kondo
+.calva
+public/js/cljs-runtime
+node_modules
+package-lock.json
+.shadow-cljs
