@@ -5,7 +5,12 @@
    [reitit.frontend]
    [reitit.frontend.easy :as rfe]
    [cell-console.views.execute-commands :as execute-commands]
+   [cell-console.views.carnaval :as carnaval]
    [cell-console.views.kibana :as kibana]
+   [cell-console.views.aws-resource :as aws-resource]
+   [cell-console.views.maws-cleanup :as maws-cleanup]
+   [cell-console.views.odin :as odin]
+   [cell-console.views.vip :as vip]
    [cell-console.views.home :as home]))
 
 
@@ -24,8 +29,36 @@
    ["kibana"
     {:name :routes/kibana
      :view kibana/main
-     :link-text "Kibana"
-     :icon kibana/drawer-icon}]])
+     :link-text "log Analysis"
+     :on-click #(. js/window (open "https://search-central-log-visualizer-2-rcz2qqcgvzziv64cyfsfob67ei.us-west-2.es.amazonaws.com/_plugin/kibana/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'1fb78dc0-fac0-11eb-ab7e-d72fcc10b058',interval:auto,query:(language:kuery,query:''),sort:!())"))
+     :icon kibana/drawer-icon}]
+   ["carnaval"
+       {:name :routes/carnaval
+        :view carnaval/main
+        :link-text "Carnaval"
+        :icon carnaval/drawer-icon}]
+   ["maws-cleanup"
+    {:name :routes/maws-cleanup
+     :view maws-cleanup/main
+     :link-text "MAWS Cleanup"
+     :on-click #(. js/window (open "https://search-central-log-visualizer-2-rcz2qqcgvzziv64cyfsfob67ei.us-west-2.es.amazonaws.com/_plugin/kibana/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'1fb78dc0-fac0-11eb-ab7e-d72fcc10b058',interval:auto,query:(language:kuery,query:''),sort:!())"))
+     :icon maws-cleanup/drawer-icon}]
+   ["aws-resource"
+    {:name :routes/aws-resource
+     :view aws-resource/main
+     :link-text "AWS Resource"
+     :icon aws-resource/drawer-icon}]
+   ["odin"
+       {:name :routes/odin
+        :view odin/main
+        :link-text "Odin"
+        :icon odin/drawer-icon}]
+   ["vip"
+    {:name :routes/vip
+     :view vip/main
+     :link-text "VIP"
+     :on-click #(. js/window (open "https://search-central-log-visualizer-2-rcz2qqcgvzziv64cyfsfob67ei.us-west-2.es.amazonaws.com/_plugin/kibana/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'1fb78dc0-fac0-11eb-ab7e-d72fcc10b058',interval:auto,query:(language:kuery,query:''),sort:!())"))
+     :icon vip/drawer-icon}]])
 
 (def router
   (reitit.frontend/router

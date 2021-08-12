@@ -130,10 +130,12 @@
                :let [route (reitit/match-by-name router route-name)
                      text (-> route :data :link-text)
                      icon (-> route :data :icon)
+                     on-click (-> route :data :on-click)
                      selected? (= route-name (-> current-route :data :name))]]
            ^{:key route-name} [list-item {:text text
                                           :icon icon
                                           :route-name route-name
+                                          :on-click on-click
                                           :selected selected?}])]
         [:> List {:style {:marginTop "auto"}}
          [:> ListItem {:button true

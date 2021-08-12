@@ -111,3 +111,8 @@
  :execution-result-loading?
  (fn [db [_ loading?]]
    (assoc db :execution-result-loading? loading?)))
+
+(rf/reg-event-db
+ :set-carnaval-workflow-step
+ (fn [db [_ step]]
+   (assoc db :carnaval-workflow-step step)))

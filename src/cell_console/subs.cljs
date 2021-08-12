@@ -80,3 +80,8 @@
  :execution-result-loading?
  (fn [db]
    (get-in db [:execution-result-loading?])))
+
+(rf/reg-sub
+ :carnaval-workflow-step
+ (fn [db]
+   (get-in db [:carnaval-workflow-step])))

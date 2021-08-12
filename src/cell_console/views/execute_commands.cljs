@@ -9,7 +9,6 @@
    ["@material-ui/icons/SlowMotionVideo" :default SlowMotionVideoIcon]
    ["@material-ui/icons/ExpandLess" :default ExpandLess]
    ["@material-ui/icons/ExpandMore" :default ExpandMore]
-   ["@material-ui/icons/Label" :default LabelIcon]
    ["@material-ui/icons/FiberManualRecord" :default FiberManualRecordIcon]
    ["@material-ui/icons/ArtTrack" :default ArtTrackIcon]
    ["@material-ui/lab" :refer [Autocomplete]]))
@@ -71,7 +70,7 @@
 
 (defn get-cell-info [service-name]
   (rf/dispatch [:cell-info-loading? true])
-  (POST "http://dev-dsk-saidev-1a-73d68fc1.eu-west-1.amazon.com:8080/cell-info"
+  (POST "http://anumoda.aka.corp.amazon.com:8080/cell-info"
     {:params
      {:service_name service-name
       :domain "gamma"}
@@ -98,7 +97,7 @@
   (let [service-name  @(rf/subscribe [:selected-service])
         command       @(rf/subscribe [:get-command])
         instance-info (get-selected-instances)]
-    (POST "http://dev-dsk-saidev-1a-73d68fc1.eu-west-1.amazon.com:8080/execute-command"
+    (POST "http://anumoda.aka.corp.amazon.com:8080/execute-command"
       {:params
        {:service_name (name service-name)
         :instance_info instance-info
@@ -184,12 +183,12 @@
                          [:> ExpandMore])]]
                 [:> Collapse {:in (:result-open instance-info) :timeout "auto" :unmountonexit "true"}
                   [:> Paper {:class (.-paper classes)}
-                     [:div (:result instance-info)]]]]]])]
+                     [:div {:style {:white-space "pre-line"}} (:result instance-info)]]]]]])]
         [:> Divider]])]])
 
 (defn command-ui [{:keys [^js classes]}]
   [:<>
-   [:div {:class (.-heroContent classes)}
+   [:div {:class (.-heroContent classes) :style {:backgroundColor "#0e2b621f" :height "250px"}}
     [:> Container {:maxWidth "sm"}
      [:> Typography {:component "h3" :variant "h3" :align "center"
                      :color "textPrimary" :gutterBottom true}

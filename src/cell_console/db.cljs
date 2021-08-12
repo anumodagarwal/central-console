@@ -11,7 +11,8 @@
    :show-command false
    :show-result false
    :cell-info nil
-   :execution-result nil})
+   :execution-result nil
+   :carnaval-workflow-step 0})
 
 (comment
   (for [[_ instance-info] (get-in app-db [:cell-info "IhmHoustonService" :ihm-dub :instances])]
