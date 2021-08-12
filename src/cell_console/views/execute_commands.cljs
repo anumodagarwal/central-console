@@ -4,12 +4,13 @@
    [re-frame.core :as rf]
    [cell-console.subs]
    [ajax.core :refer [POST]]
-   ["@material-ui/core" :refer [Paper CircularProgress Divider Button TextField IconButton Collapse Grid Typography Container List ListItem ListItemText ListItemIcon Checkbox] :as mui]
+   ["@material-ui/core" :refer [Paper Box CircularProgress Divider Button TextField IconButton Collapse Grid Typography Container List ListItem ListItemText ListItemIcon Checkbox] :as mui]
    ["@material-ui/core/styles" :refer [withStyles]]
    ["@material-ui/icons/SlowMotionVideo" :default SlowMotionVideoIcon]
    ["@material-ui/icons/ExpandLess" :default ExpandLess]
    ["@material-ui/icons/ExpandMore" :default ExpandMore]
-   ["@material-ui/icons/Ballot" :default BallotIcon]
+   ["@material-ui/icons/Label" :default LabelIcon]
+   ["@material-ui/icons/FiberManualRecord" :default FiberManualRecordIcon]
    ["@material-ui/icons/ArtTrack" :default ArtTrackIcon]
    ["@material-ui/lab" :refer [Autocomplete]]))
    
@@ -70,7 +71,7 @@
 
 (defn get-cell-info [service-name]
   (rf/dispatch [:cell-info-loading? true])
-  (POST "http://127.0.0.1:5000/cell-info"
+  (POST "http://dev-dsk-saidev-1a-73d68fc1.eu-west-1.amazon.com:8080/cell-info"
     {:params
      {:service_name service-name
       :domain "gamma"}
@@ -97,7 +98,7 @@
   (let [service-name  @(rf/subscribe [:selected-service])
         command       @(rf/subscribe [:get-command])
         instance-info (get-selected-instances)]
-    (POST "http://127.0.0.1:5000/execute-command"
+    (POST "http://dev-dsk-saidev-1a-73d68fc1.eu-west-1.amazon.com:8080/execute-command"
       {:params
        {:service_name (name service-name)
         :instance_info instance-info
@@ -141,6 +142,7 @@
   [:> Paper {:class (.-paper classes)}
     [:> TextField
       {:fullWidth false
+       :required true
        :class "command-text"
        :InputProps {:classes {:input "command-text"}}
        :on-change #(rf/dispatch [:set-command (.. % -target -value)])
@@ -169,19 +171,20 @@
          (for [[instance-id instance-info] (:instances cell-info)]
            ^{:key instance-id}
            [:div
-            [:> List {:disablePadding true :dense true}
-             [:> ListItem {:button true}
-              [:> ListItemIcon
-                [:> BallotIcon]]
-              [:> ListItemText {:primary (:name instance-info)}]
-              [:> IconButton {:onClick #(rf/dispatch [:result/toggle-instance cell-id instance-id])}
-                (if (:result-open instance-info)
-                  [:> ExpandLess]
-                  ;; else
-                  [:> ExpandMore])]]]
-            [:> Collapse {:in (:result-open instance-info) :timeout "auto" :unmountonexit "true"}
-             [:> Paper {:class (.-paper classes)}
-              [:div (:result instance-info)]]]])]
+            [:> Box {:borderBottom 0 :borderTop 1 :borderRight 0 :borderLeft 0 :borderRadius 2 :borderColor "#d1dce6"}
+              [:> List {:disablePadding true :dense true}
+                [:> ListItem {:button true}
+                   [:> ListItemIcon
+                       [:> FiberManualRecordIcon]]
+                   [:> ListItemText {:primary (:name instance-info)}]
+                   [:> IconButton {:onClick #(rf/dispatch [:result/toggle-instance cell-id instance-id])}
+                       (if (:result-open instance-info)
+                         [:> ExpandLess]
+                         ;; else
+                         [:> ExpandMore])]]
+                [:> Collapse {:in (:result-open instance-info) :timeout "auto" :unmountonexit "true"}
+                  [:> Paper {:class (.-paper classes)}
+                     [:div (:result instance-info)]]]]]])]
         [:> Divider]])]])
 
 (defn command-ui [{:keys [^js classes]}]
@@ -231,11 +234,16 @@
       (if execution-result-loading?
         [:> Grid {:container true :spacing 4 :alignItems "center" :justifyContent "center"}
          [:> Grid {:item true}
-          [:> CircularProgress {:value 200 :color "primary"}]]]
+          [:> CircularProgress {:value 200 :color "primary"}]
+          ;; dummy div for extra height at the bottom of the screen
+          [:div {:style {:height 200}}]]]
         ;; else
         (when (and (not (nil? execution-result)) show-result)
-          [:> Grid {:item true :xs 12}
-           [results-view {:result execution-result :classes classes}]])))]])
+          [:div
+            [:> Grid {:item true :xs 12}
+             [results-view {:result execution-result :classes classes}]]
+            ;; dummy div for extra height at the bottom of the screen
+            [:div {:style {:height 200}}]])))]])
 
 (defn main [{:keys [^js classes]}]
   [:<>
