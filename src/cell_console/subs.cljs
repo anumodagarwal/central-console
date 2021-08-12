@@ -39,7 +39,6 @@
 (rf/reg-sub
  :service-cells
  (fn [db [_ service-name]]
-   (js/console.log service-name)
    (get-in db [:cell-info service-name])))
 
 (rf/reg-sub
@@ -62,3 +61,22 @@
  (fn [db]
    (get-in db [:show-cell-info])))
 
+(rf/reg-sub
+ :show-cell-info
+ (fn [db]
+   (get-in db [:show-cell-info])))
+
+(rf/reg-sub
+ :get-command
+ (fn [db]
+   (get-in db [:command])))
+
+(rf/reg-sub
+ :cell-info-loading?
+ (fn [db]
+    (get-in db [:cell-info-loading?])))
+
+(rf/reg-sub
+ :execution-result-loading?
+ (fn [db]
+   (get-in db [:execution-result-loading?])))

@@ -1,6 +1,7 @@
 import json
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
+import time
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +13,7 @@ def ping():
 
 @app.route("/cell-info", methods=["POST"])
 def cell_info():
+    time.sleep(2)
     data = json.loads(request.data)
     service_name = data["service_name"]
     domain = data["domain"]
@@ -61,12 +63,15 @@ def cell_info():
     return make_response(cell_info, 200)
 
 
-@app.route("/execute_command", methods=["POST"])
+@app.route("/execute-command", methods=["POST"])
 def execute_command():
+    time.sleep(2)
     data = json.loads(request.data)
     service_name = data["service_name"]
+    command = data["command"]
     domain = data["domain"]
     instance_info = data["instance_info"]
+    print(f"data: {data}")
     execution_result = {
         "ihm-dub":
         {
@@ -109,7 +114,6 @@ def execute_command():
             }
         }
     }
-    print(f"Received service_name: {service_name}, domain: {domain}")
     return make_response(execution_result, 200)
     
 if __name__ == "__main__":

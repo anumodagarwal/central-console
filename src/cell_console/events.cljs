@@ -48,7 +48,7 @@
 (rf/reg-event-db
  :toggle-cell
  (fn [db [_ service-name cell-id selected?]]
-   (doseq [[instance-id _] (get-in app-db [:cell-info service-name cell-id :instances])]
+   (doseq [[instance-id _] (get-in db [:cell-info service-name cell-id :instances])]
     (rf/dispatch [:toggle-instance service-name cell-id instance-id selected?]))
    (assoc-in db [:cell-info service-name cell-id :selected] selected?)))
    
@@ -65,8 +65,6 @@
 (rf/reg-event-db
   :result/toggle-cell
   (fn [db [_ cell-id]]
-  ;;  (doseq [[instance-id _] (get-in app-db [:execution-result cell-id :instances])]
-  ;;   (rf/dispatch [:result/toggle-instance cell-id instance-id]))
    (update-in db [:execution-result cell-id :instances-open] not)))
 
 (rf/reg-event-db
@@ -88,3 +86,28 @@
  :show-cell-info
  (fn [db [_ show?]]
     (assoc db :show-cell-info show?)))
+
+(rf/reg-event-db
+ :update-cell-info
+ (fn [db [_ cell-info]]
+   (assoc db :cell-info cell-info)))
+
+(rf/reg-event-db
+ :update-execution-result
+ (fn [db [_ result]]
+   (assoc db :execution-result result)))
+
+(rf/reg-event-db
+ :set-command
+ (fn [db [_ command]]
+   (assoc db :command command)))
+
+(rf/reg-event-db
+ :cell-info-loading?
+ (fn [db [_ loading?]]
+   (assoc db :cell-info-loading? loading?)))
+
+(rf/reg-event-db
+ :execution-result-loading?
+ (fn [db [_ loading?]]
+   (assoc db :execution-result-loading? loading?)))
