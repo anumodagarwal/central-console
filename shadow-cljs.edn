@@ -3,7 +3,8 @@
 
  :dependencies [[re-frame           "1.2.0"]
                 [binaryage/devtools "1.0.3"]
-                [metosin/reitit     "0.5.5"]]
+                [metosin/reitit     "0.5.5"]
+                [cljs-ajax          "0.8.3"]]
 
  :builds {:app {:target :browser
                 :output-dir "public/js"

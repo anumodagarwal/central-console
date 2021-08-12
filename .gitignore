@@ -6,3 +6,4 @@ public/js/cljs-runtime
 node_modules
 package-lock.json
 .shadow-cljs
+server/hackathon-venv

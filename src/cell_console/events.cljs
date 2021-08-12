@@ -44,3 +44,47 @@
  :selected-service
   (fn [db [_ service-name]]
     (assoc db :selected-service service-name)))
+
+(rf/reg-event-db
+ :toggle-cell
+ (fn [db [_ service-name cell-id selected?]]
+   (doseq [[instance-id _] (get-in app-db [:cell-info service-name cell-id :instances])]
+    (rf/dispatch [:toggle-instance service-name cell-id instance-id selected?]))
+   (assoc-in db [:cell-info service-name cell-id :selected] selected?)))
+   
+(rf/reg-event-db
+ :toggle-instance
+ (fn [db [_ service-name cell-id instance-id selected?]]
+   (assoc-in db [:cell-info service-name cell-id :instances instance-id :selected] selected?)))
+
+(rf/reg-event-db
+ :toggle-instances-view
+ (fn [db [_ service-name cell-id]]
+   (update-in db [:cell-info service-name cell-id :instances-open] not)))
+
+(rf/reg-event-db
+  :result/toggle-cell
+  (fn [db [_ cell-id]]
+  ;;  (doseq [[instance-id _] (get-in app-db [:execution-result cell-id :instances])]
+  ;;   (rf/dispatch [:result/toggle-instance cell-id instance-id]))
+   (update-in db [:execution-result cell-id :instances-open] not)))
+
+(rf/reg-event-db
+ :result/toggle-instance
+ (fn [db [_ cell-id instance-id]]
+  (update-in db [:execution-result cell-id :instances instance-id :result-open] not)))
+
+(rf/reg-event-db
+ :show-command
+ (fn [db [_ show?]]
+   (assoc db :show-command show?)))
+
+(rf/reg-event-db
+ :show-result
+ (fn [db [_ show?]]
+   (assoc db :show-result show?)))
+
+(rf/reg-event-db
+ :show-cell-info
+ (fn [db [_ show?]]
+    (assoc db :show-cell-info show?)))
